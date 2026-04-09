@@ -3,8 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Object Archive Prototype</title>
+  <title>Object Archive Prototype v2</title>
   <style>
+    /* ===== THEME LAYER ===== */
+    :root {
+      /* Colors */
+      --color-bg: #0a0a0a;
+      --color-surface: #1a1a1a;
+      --color-surface-hover: #222;
+      --color-text: #f5f5f5;
+      --color-text-muted: #aaa;
+      --color-text-dim: #888;
+      --color-border: #333;
+      --color-border-hover: #555;
+      --color-accent: #fff;
+      --color-accent-dim: #999;
+
+      /* Typography */
+      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-size-h1: 2.5rem;
+      --font-size-h2: 1.5rem;
+      --font-size-h3: 1.2rem;
+      --font-size-base: 1rem;
+      --font-size-sm: 0.9rem;
+      --font-weight-regular: 400;
+      --font-weight-medium: 500;
+      --font-weight-semibold: 600;
+
+      /* Spacing */
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 15px;
+      --spacing-lg: 20px;
+      --spacing-xl: 30px;
+      --spacing-2xl: 40px;
+
+      /* Radius */
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+
+      /* Transitions */
+      --transition-fast: 0.2s;
+      --transition-base: 0.3s;
+    }
+
+    /* ===== ANIMATION LAYER (PRESETS READY FOR INTERACTION) ===== */
+    @keyframes nodeHover {
+      to {
+        transform: scale(1.1);
+      }
+    }
+
+    @keyframes connectionHighlight {
+      to {
+        stroke-width: 2.5;
+        opacity: 1;
+      }
+    }
+
+    @keyframes nodeGlowPulse {
+      0%, 100% {
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
+      }
+      50% {
+        filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4));
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== BASE STYLES ===== */
     * {
       margin: 0;
       padding: 0;
@@ -12,16 +95,16 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #0a0a0a;
-      color: #f5f5f5;
+      font-family: var(--font-family);
+      background: var(--color-bg);
+      color: var(--color-text);
       line-height: 1.6;
     }
 
     .screen {
       display: none;
       min-height: 100vh;
-      padding: 40px 20px;
+      padding: var(--spacing-2xl) var(--spacing-lg);
       animation: fadeIn 0.3s ease-in;
     }
 
@@ -31,67 +114,63 @@
       justify-content: center;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
     .container {
       max-width: 800px;
       margin: 0 auto;
     }
 
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      font-weight: 600;
+      font-size: var(--font-size-h1);
+      margin-bottom: var(--spacing-lg);
+      font-weight: var(--font-weight-semibold);
       letter-spacing: -0.02em;
     }
 
     h2 {
-      font-size: 1.5rem;
-      margin-bottom: 30px;
-      font-weight: 500;
+      font-size: var(--font-size-h2);
+      margin-bottom: var(--spacing-xl);
+      font-weight: var(--font-weight-medium);
     }
 
     h3 {
-      font-size: 1.2rem;
-      margin-bottom: 20px;
-      font-weight: 500;
+      font-size: var(--font-size-h3);
+      margin-bottom: var(--spacing-lg);
+      font-weight: var(--font-weight-medium);
     }
 
     p {
-      font-size: 1.1rem;
-      color: #aaa;
-      margin-bottom: 40px;
+      font-size: var(--font-size-base);
+      color: var(--color-text-muted);
+      margin-bottom: var(--spacing-2xl);
     }
 
+    /* ===== FORM ELEMENTS ===== */
     .checkbox-group {
       display: grid;
-      gap: 15px;
-      margin-bottom: 40px;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-2xl);
     }
 
     .checkbox-item {
       display: flex;
       align-items: center;
-      padding: 15px;
-      background: #1a1a1a;
-      border: 2px solid #333;
-      border-radius: 8px;
+      padding: var(--spacing-md);
+      background: var(--color-surface);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all var(--transition-fast);
     }
 
     .checkbox-item:hover {
-      border-color: #555;
-      background: #222;
+      border-color: var(--color-border-hover);
+      background: var(--color-surface-hover);
     }
 
     .checkbox-item input[type="checkbox"] {
       width: 20px;
       height: 20px;
-      margin-right: 15px;
+      margin-right: var(--spacing-md);
       cursor: pointer;
     }
 
@@ -102,29 +181,29 @@
 
     .checkbox-item label strong {
       display: block;
-      font-size: 1.1rem;
-      margin-bottom: 4px;
+      font-size: var(--font-size-base);
+      margin-bottom: var(--spacing-xs);
     }
 
     .checkbox-item label span {
-      font-size: 0.9rem;
-      color: #888;
+      font-size: var(--font-size-sm);
+      color: var(--color-text-dim);
     }
 
     button {
-      padding: 15px 30px;
-      font-size: 1rem;
-      background: #fff;
-      color: #000;
+      padding: var(--spacing-md) var(--spacing-xl);
+      font-size: var(--font-size-base);
+      background: var(--color-accent);
+      color: var(--color-bg);
       border: none;
-      border-radius: 8px;
+      border-radius: var(--radius-md);
       cursor: pointer;
-      font-weight: 600;
-      transition: all 0.2s;
+      font-weight: var(--font-weight-semibold);
+      transition: all var(--transition-fast);
     }
 
     button:hover {
-      background: #f0f0f0;
+      background: var(--color-text-muted);
       transform: translateY(-2px);
     }
 
@@ -133,15 +212,27 @@
       cursor: not-allowed;
     }
 
+    .button-secondary {
+      background: var(--color-surface);
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+    }
+
+    .button-secondary:hover {
+      border-color: var(--color-border-hover);
+      background: var(--color-surface-hover);
+    }
+
+    /* ===== CONSTELLATION ===== */
     .constellation {
       position: relative;
       width: 100%;
       height: 500px;
-      background: #1a1a1a;
-      border-radius: 12px;
-      margin-bottom: 40px;
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--spacing-2xl);
       overflow: hidden;
-      border: 1px solid #333;
+      border: 1px solid var(--color-border);
     }
 
     .object-node {
@@ -150,156 +241,256 @@
       flex-direction: column;
       align-items: center;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all var(--transition-base);
+      /* Animation hooks ready */
+      --node-scale: 1;
+      --node-opacity: 1;
+      transform: scale(var(--node-scale));
+      opacity: var(--node-opacity);
+    }
+
+    .object-node.answered {
+      --node-opacity: 1;
+    }
+
+    .object-node.grayed {
+      --node-opacity: 0.4;
+    }
+
+    .object-node:hover:not(.grayed) {
+      animation: nodeHover var(--transition-base) forwards;
     }
 
     .object-image {
       width: 80px;
       height: 80px;
-      background: #333;
-      border-radius: 8px;
-      margin-bottom: 8px;
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--spacing-sm);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 2rem;
-      border: 2px solid #444;
+      border: 2px solid var(--color-border);
+      transition: all var(--transition-base);
     }
 
-    .object-node:hover .object-image {
-      border-color: #fff;
-      transform: scale(1.1);
+    .object-node:hover:not(.grayed) .object-image {
+      border-color: var(--color-accent);
     }
 
     .object-label {
-      font-size: 0.9rem;
+      font-size: var(--font-size-sm);
       text-align: center;
       width: 100px;
-      color: #aaa;
+      color: var(--color-text-muted);
     }
 
-    .connection {
+    /* ===== CONNECTIONS ===== */
+    .connection-svg {
       position: absolute;
-      stroke: #444;
-      stroke-width: 2;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
     }
 
-    .connection.highlight {
-      stroke: #fff;
+    .connection-line {
+      stroke: var(--color-border);
+      stroke-width: 2;
+      transition: all var(--transition-base);
+      /* Animation hooks ready */
+    }
+
+    .connection-line.highlighted {
+      stroke: var(--color-accent);
       stroke-width: 2.5;
     }
 
+    /* ===== CONTROLS ===== */
     .controls {
       display: flex;
-      gap: 10px;
+      gap: var(--spacing-sm);
       flex-wrap: wrap;
-      margin-bottom: 30px;
+      margin-bottom: var(--spacing-xl);
     }
 
     .control-btn {
-      padding: 8px 16px;
-      font-size: 0.9rem;
-      background: #2a2a2a;
-      color: #fff;
-      border: 1px solid #444;
-      border-radius: 6px;
+      padding: var(--spacing-sm) var(--spacing-md);
+      font-size: var(--font-size-sm);
+      background: var(--color-surface);
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
       cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .control-btn.active {
-      background: #fff;
-      color: #000;
-      border-color: #fff;
+      transition: all var(--transition-fast);
     }
 
     .control-btn:hover {
-      border-color: #999;
+      border-color: var(--color-border-hover);
     }
 
+    .control-btn.active {
+      background: var(--color-accent);
+      color: var(--color-bg);
+      border-color: var(--color-accent);
+    }
+
+    /* ===== INFO BOX ===== */
     .info-box {
-      background: #1a1a1a;
-      border-left: 3px solid #fff;
-      padding: 20px;
-      margin-top: 20px;
-      border-radius: 6px;
-      color: #ccc;
+      background: var(--color-surface);
+      border-left: 3px solid var(--color-accent);
+      padding: var(--spacing-lg);
+      margin-top: var(--spacing-lg);
+      border-radius: var(--radius-sm);
+      color: var(--color-text-muted);
     }
 
+    /* ===== NAVIGATION ===== */
     .nav-buttons {
       display: flex;
-      gap: 15px;
-      margin-top: 40px;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-2xl);
       justify-content: center;
+      flex-wrap: wrap;
     }
 
     .nav-buttons button {
-      padding: 10px 20px;
-      font-size: 0.9rem;
+      padding: var(--spacing-sm) var(--spacing-lg);
+      font-size: var(--font-size-sm);
     }
 
+    /* ===== QUESTION SCREEN ===== */
+    .option-card {
+      background: var(--color-surface);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-xl);
+      margin-bottom: var(--spacing-xl);
+      animation: slideUp var(--transition-base);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .option-card:hover {
+      border-color: var(--color-border-hover);
+      background: var(--color-surface-hover);
+    }
+
+    .option-card.selected {
+      border-color: var(--color-accent);
+      background: var(--color-surface-hover);
+      border-left: 4px solid var(--color-accent);
+    }
+
+    .option-card.guided-option {
+      border-left: 4px solid var(--color-accent-dim);
+    }
+
+    .option-card strong {
+      display: block;
+      margin-bottom: var(--spacing-sm);
+      font-size: var(--font-size-base);
+    }
+
+    .option-card span {
+      display: block;
+      font-size: var(--font-size-sm);
+      color: var(--color-text-dim);
+    }
+
+    .feedback-section {
+      margin-top: var(--spacing-2xl);
+      padding-top: var(--spacing-2xl);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .feedback-card {
+      background: var(--color-surface);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      border-left: 4px solid var(--color-accent-dim);
+      padding: var(--spacing-xl);
+      margin-bottom: var(--spacing-xl);
+      animation: slideUp var(--transition-base);
+    }
+
+    .feedback-card strong {
+      display: block;
+      margin-bottom: var(--spacing-sm);
+      font-size: var(--font-size-base);
+    }
+
+    .feedback-card span {
+      display: block;
+      font-size: var(--font-size-sm);
+      color: var(--color-text-dim);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .feedback-card textarea {
+      width: 100%;
+      padding: var(--spacing-md);
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      color: var(--color-text);
+      font-family: var(--font-family);
+      font-size: var(--font-size-sm);
+      resize: vertical;
+      min-height: 100px;
+      transition: all var(--transition-fast);
+    }
+
+    .feedback-card textarea:focus {
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+    }
+
+    /* ===== INTRO TEXT ===== */
     .intro-text {
-      background: #1a1a1a;
-      padding: 30px;
-      border-radius: 12px;
-      border: 1px solid #333;
-      margin-bottom: 40px;
+      background: var(--color-surface);
+      padding: var(--spacing-xl);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border);
+      margin-bottom: var(--spacing-2xl);
     }
 
     .intro-text strong {
-      color: #fff;
+      color: var(--color-text);
     }
 
     .upload-area {
-      margin-bottom: 30px;
-      padding: 40px;
-      background: #1a1a1a;
-      border: 2px dashed #444;
-      border-radius: 12px;
+      padding: var(--spacing-2xl);
+      background: var(--color-surface);
+      border: 2px dashed var(--color-border);
+      border-radius: var(--radius-lg);
       text-align: center;
       cursor: pointer;
+      transition: all var(--transition-base);
     }
 
-    .example-object {
-      background: #1a1a1a;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 30px;
+    .upload-area:hover {
+      border-color: var(--color-border-hover);
     }
 
-    .example-image {
+    .object-card {
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .object-card-image {
       width: 100%;
       height: 200px;
-      background: #2a2a2a;
-      border-radius: 8px;
+      background: var(--color-bg);
+      border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 4rem;
-      margin-bottom: 20px;
-    }
-
-    .example-question {
-      padding: 10px 15px;
-      background: #333;
-      border-radius: 6px;
-      margin-bottom: 10px;
-      border-left: 3px solid #666;
-    }
-
-    .example-question.highlight {
-      border-left-color: #fff;
-    }
-
-    .example-question strong {
-      color: #fff;
-      display: block;
-    }
-
-    .example-question span {
-      color: #999;
-      font-size: 0.9rem;
+      margin-bottom: var(--spacing-lg);
     }
   </style>
 </head>
@@ -396,25 +587,79 @@
     <h2>The Constellation</h2>
     <p>Your interests: <strong id="selectedList">None selected (see all)</strong></p>
 
-    <div style="margin-bottom: 20px;">
-      <p style="margin-bottom: 10px; font-size: 0.95rem; color: #999;">Filter by your interests:</p>
+    <div style="margin-bottom: var(--spacing-lg);">
+      <p style="margin-bottom: var(--spacing-sm); font-size: var(--font-size-sm); color: var(--color-text-dim);">Filter by your interests:</p>
       <div class="controls" id="filterControls"></div>
     </div>
 
     <div class="constellation" id="constellation"></div>
 
     <div class="info-box">
-      <strong>How to explore:</strong> Click any object to upload something similar, or select a different interest filter above to reshape the constellation.
+      <strong>How to explore:</strong> Click any object to engage with it, or upload something new. Grayed objects are concepts you haven't explored yet.
     </div>
 
     <div class="nav-buttons">
       <button onclick="goToScreen('uploadScreen')">📤 Upload</button>
-      <button onclick="goToScreen('onboardingScreen')">⚙️ Change Interests</button>
+      <button class="button-secondary" onclick="goToScreen('onboardingScreen')">⚙️ Change Interests</button>
     </div>
   </div>
 </div>
 
-<!-- SCREEN 4: UPLOAD FLOW -->
+<!-- SCREEN 4: ENGAGEMENT FLOW (for both upload and click) -->
+<div class="screen" id="engagementScreen">
+  <div class="container">
+    <h2 id="engagementScreenTitle">How does this relate to your interests?</h2>
+    <p id="engagementScreenSubtitle">Choose one of these perspectives, or share your own.</p>
+
+    <div id="optionsContainer"></div>
+
+    <div class="feedback-section">
+      <div class="feedback-card">
+        <strong>Your perspective</strong>
+        <span>Tell us something else about this object</span>
+        <textarea id="feedbackText" placeholder="What do you see or think about this object?"></textarea>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button id="continueBtn" onclick="submitEngagement()" disabled>Continue</button>
+      <button class="button-secondary" onclick="goToScreen('constellationScreen')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 5: CONTEXT RESULT (after selecting option) -->
+<div class="screen" id="contextScreen">
+  <div class="container">
+    <h2 id="contextTitle">The Connection</h2>
+
+    <div style="background: var(--color-surface); border-radius: var(--radius-lg); padding: var(--spacing-xl); margin-bottom: var(--spacing-xl); border-left: 4px solid var(--color-accent);">
+      <div style="display: flex; gap: var(--spacing-lg); align-items: center; margin-bottom: var(--spacing-lg);">
+        <div style="font-size: 3rem; flex-shrink: 0;" id="contextEmoji"></div>
+        <div>
+          <div style="font-size: var(--font-size-sm); color: var(--color-text-dim); margin-bottom: var(--spacing-sm);">Selected Perspective</div>
+          <div style="font-size: var(--font-size-h3); font-weight: var(--font-weight-semibold);" id="contextOption"></div>
+        </div>
+      </div>
+      <p id="contextText" style="margin-bottom: 0;"></p>
+    </div>
+
+    <div class="feedback-section">
+      <div class="feedback-card">
+        <strong>Add your own insight (optional)</strong>
+        <span>Share what you observe or think about this connection</span>
+        <textarea id="contextFeedbackText" placeholder="Your observations..."></textarea>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button onclick="submitContext()">Got It</button>
+      <button class="button-secondary" onclick="goToScreen('engagementScreen')">Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 5: UPLOAD FLOW -->
 <div class="screen" id="uploadScreen">
   <div class="container">
     <h2>Upload an Object</h2>
@@ -424,52 +669,186 @@
     </div>
 
     <div class="upload-area">
-      <div style="font-size: 3rem; margin-bottom: 10px;">📸</div>
-      <p>Choose a file or drag it here</p>
+      <div style="font-size: 3rem; margin-bottom: var(--spacing-sm);">📸</div>
+      <p style="margin-bottom: 0;">Choose a file or drag it here</p>
     </div>
 
     <h3>Example: What questions could this answer?</h3>
 
-    <div class="example-object">
-      <div class="example-image">🖼️</div>
-      <p style="color: #999; margin-bottom: 15px;">Caravaggio's "The Calling of Matthew" (1600)</p>
+    <div class="object-card">
+      <div class="object-card-image">🖼️</div>
+      <p style="color: var(--color-text-dim); margin-bottom: var(--spacing-lg);">Caravaggio's "The Calling of Matthew" (1600)</p>
 
-      <div style="display: grid; gap: 10px;">
-        <div class="example-question highlight">
-          <strong>WHO MADE IT</strong>
-          <span>Learn about Caravaggio's revolutionary techniques</span>
+      <div style="display: grid; gap: var(--spacing-sm);">
+        <div style="padding: var(--spacing-md); background: var(--color-bg); border-radius: var(--radius-sm); border-left: 3px solid var(--color-accent);">
+          <strong style="color: var(--color-accent);">WHO MADE IT</strong>
+          <div style="color: var(--color-text-dim); font-size: var(--font-size-sm);">Learn about Caravaggio's revolutionary techniques</div>
         </div>
-        <div class="example-question">
-          <strong>WHEN</strong>
-          <span>Discover how Counter-Reformation shaped religious art</span>
+        <div style="padding: var(--spacing-md); background: var(--color-bg); border-radius: var(--radius-sm);">
+          <strong style="color: var(--color-text-dim);">WHEN</strong>
+          <div style="color: var(--color-text-dim); font-size: var(--font-size-sm);">Discover how Counter-Reformation shaped religious art</div>
         </div>
-        <div class="example-question">
-          <strong>WHAT IT SHOWS</strong>
-          <span>See other works depicting religious transformation</span>
+        <div style="padding: var(--spacing-md); background: var(--color-bg); border-radius: var(--radius-sm);">
+          <strong style="color: var(--color-text-dim);">WHAT IT SHOWS</strong>
+          <div style="color: var(--color-text-dim); font-size: var(--font-size-sm);">See other works depicting religious transformation</div>
         </div>
       </div>
     </div>
 
-    <p style="color: #999; font-size: 0.95rem; margin-bottom: 20px;">Based on your interests, the archive will suggest relevant connections and questions.</p>
+    <p style="color: var(--color-text-dim); font-size: var(--font-size-sm); margin-bottom: var(--spacing-lg);">Based on your interests, you'll answer questions before returning to the archive.</p>
 
     <div class="nav-buttons">
-      <button onclick="goToScreen('constellationScreen')">← Back to Archive</button>
+      <button class="button-secondary" onclick="goToScreen('constellationScreen')">← Back to Archive</button>
     </div>
   </div>
 </div>
 
 <script>
+  /* ===== DATA LAYER ===== */
   const objects = [
-    { name: "Caravaggio\nCalling", emoji: "🖼️", x: 150, y: 100, questions: ["WHO", "WHEN", "WHAT", "WHY"] },
-    { name: "Vermeer\nGirl with Pearl", emoji: "🎨", x: 250, y: 200, questions: ["WHO", "MATERIAL", "HOW", "WHAT"] },
-    { name: "Egyptian\nVase", emoji: "🏺", x: 100, y: 300, questions: ["MATERIAL", "HOW", "TRADE", "WHERE"] },
-    { name: "Michelangelo\nDavid", emoji: "🗿", x: 400, y: 150, questions: ["WHO", "HOW", "MATERIAL", "WHEN"] },
-    { name: "Sagrada\nFamilía", emoji: "🏛️", x: 550, y: 280, questions: ["WHEN", "WHERE", "TRADE", "WHY"] },
-    { name: "Japanese\nPottery", emoji: "⚱️", x: 300, y: 400, questions: ["MATERIAL", "WHERE", "TRADE", "HOW"] },
-    { name: "Ancient\nCoins", emoji: "🪙", x: 450, y: 350, questions: ["TRADE", "WHEN", "WHERE", "WHO"] },
+    {
+      id: 1,
+      name: "Caravaggio\nCalling",
+      emoji: "🖼️",
+      x: 150,
+      y: 100,
+      questions: ["WHO", "WHEN", "WHAT", "WHY"],
+      userAnswered: [],
+      animations: {
+        hover: { type: "scale", intensity: 1.1, duration: 200 },
+        mouseMove: { type: "glowFollow", intensity: 0.8 },
+        click: { type: "pulse", duration: 300 },
+        drag: { type: "smooth", tension: 0.3 }
+      }
+    },
+    {
+      id: 2,
+      name: "Vermeer\nGirl with Pearl",
+      emoji: "🎨",
+      x: 250,
+      y: 200,
+      questions: ["WHO", "MATERIAL", "HOW", "WHAT"],
+      userAnswered: [],
+      animations: { hover: { type: "scale", intensity: 1.1, duration: 200 } }
+    },
+    {
+      id: 3,
+      name: "Egyptian\nVase",
+      emoji: "🏺",
+      x: 100,
+      y: 300,
+      questions: ["MATERIAL", "HOW", "TRADE", "WHERE"],
+      userAnswered: [],
+      animations: { hover: { type: "scale", intensity: 1.1, duration: 200 } }
+    },
+    {
+      id: 4,
+      name: "Michelangelo\nDavid",
+      emoji: "🗿",
+      x: 400,
+      y: 150,
+      questions: ["WHO", "HOW", "MATERIAL", "WHEN"],
+      userAnswered: [],
+      animations: { hover: { type: "scale", intensity: 1.1, duration: 200 } }
+    },
+    {
+      id: 5,
+      name: "Sagrada\nFamilía",
+      emoji: "🏛️",
+      x: 550,
+      y: 280,
+      questions: ["WHEN", "WHERE", "TRADE", "WHY"],
+      userAnswered: [],
+      animations: { hover: { type: "scale", intensity: 1.1, duration: 200 } }
+    },
+    {
+      id: 6,
+      name: "Japanese\nPottery",
+      emoji: "⚱️",
+      x: 300,
+      y: 400,
+      questions: ["MATERIAL", "WHERE", "TRADE", "HOW"],
+      userAnswered: [],
+      animations: { hover: { type: "scale", intensity: 1.1, duration: 200 } }
+    },
+    {
+      id: 7,
+      name: "Ancient\nCoins",
+      emoji: "🪙",
+      x: 450,
+      y: 350,
+      questions: ["TRADE", "WHEN", "WHERE", "WHO"],
+      userAnswered: [],
+      animations: { hover: { type: "scale", intensity: 1.1, duration: 200 } }
+    },
   ];
 
   let selectedQuestions = [];
+  let currentEngagement = null; // { type: 'upload' | 'click', objectId: number }
+  let selectedOption = null; // Track which option user selected
+
+  const optionDescriptions = {
+    "WHO": "This reveals WHO MADE IT",
+    "MATERIAL": "This reveals WHAT IT'S MADE OF",
+    "HOW": "This reveals HOW IT WAS MADE",
+    "WHEN": "This reveals WHEN it was created",
+    "TRADE": "This reveals THE TRADE around it",
+    "WHAT": "This reveals WHAT IT SHOWS",
+    "WHERE": "This reveals WHERE it belongs",
+    "WHY": "This reveals WHY it matters"
+  };
+
+  const contextExamples = {
+    "WHO": {
+      title: "WHO MADE IT",
+      caravaggio: "Caravaggio revolutionized painting by bringing divine figures into everyday scenes. His use of light became a signature technique, influencing baroque artists for centuries. Understanding the artist reveals the thinking behind every brushstroke.",
+      vermeer: "Vermeer was a master of light and domestic space. His works are rare—only 37 confirmed paintings survive. Knowing who made it helps us understand the precision and care in every composition.",
+      david: "Michelangelo spent 3 years sculpting David from a single block of marble. His anatomical knowledge and artistic vision transformed how we see the human form.",
+      coins: "Ancient coins were designed by skilled engravers who served empires and kingdoms. Each face, each symbol was a statement of power and identity."
+    },
+    "MATERIAL": {
+      title: "WHAT IT'S MADE OF",
+      caravaggio: "Oil on canvas allowed Caravaggio to layer colors and create dramatic shadows. This medium was revolutionary for the depth it enabled.",
+      vermeer: "Vermeer used lapis lazuli—one of the most expensive pigments—for his blue tones. The material itself reflects the value and craftsmanship.",
+      david: "Pure white Carrara marble from Italy. The stone's quality determined what could be carved. Michelangelo chose his block carefully.",
+      coins: "Bronze, silver, and gold. The material itself carries meaning—precious metals signified imperial authority."
+    },
+    "WHEN": {
+      title: "WHEN",
+      caravaggio: "Created in 1600 during the Counter-Reformation. The Catholic Church commissioned religious art to inspire devotion and compete with Protestant austerity.",
+      vermeer: "17th century Dutch Golden Age. Vermeer painted during a time of enormous wealth and cultural flourishing in the Netherlands.",
+      david: "1504. At the height of the Renaissance. Italy was rediscovering classical ideals, and Michelangelo embodied that spirit.",
+      coins: "Ancient Rome, approximately 100 BCE. Coins tracked empires and trade routes across centuries."
+    },
+    "TRADE": {
+      title: "THE TRADE",
+      caravaggio: "Commissioned by the Church, part of a larger system of patronage. Artists depended on powerful institutions and wealthy families for survival.",
+      vermeer: "Vermeer's paintings were expensive. He painted for wealthy Amsterdam merchants. The art market was booming in 17th century Holland.",
+      david: "Michelangelo was commissioned by the Medici family. Sculpture required stone quarries, assistants, and years of labor—a costly enterprise.",
+      coins: "Coins represented economic systems. Mints produced them, merchants used them, empires controlled supply. Money itself is a craft."
+    },
+    "WHAT": {
+      title: "WHAT IT SHOWS",
+      caravaggio: "A tax collector is called to become a disciple. It's a moment of transformation—everyday people chosen for something greater.",
+      vermeer: "A girl with a pearl earring. The subject is unknown, but her gaze is unforgettable. Vermeer captured quiet intimacy.",
+      david: "The biblical hero, but not as a king. Michelangelo shows him young, thoughtful, before battle—vulnerable and powerful.",
+      coins: "Emperors, gods, and symbols of power. Coins told stories of conquest, trade, and identity."
+    },
+    "WHERE": {
+      title: "WHERE",
+      caravaggio: "Rome, in a church. The painting was commissioned to inspire pilgrims and believers entering sacred space.",
+      vermeer: "Amsterdam, where Vermeer lived and worked. Dutch domestic interiors were his stage.",
+      david: "Florence, Italy. Created for the cathedral square. It symbolized the city's power and renaissance spirit.",
+      coins: "Found across continents. Coins trace ancient trade routes from Rome to Egypt to Asia."
+    },
+    "WHY": {
+      title: "WHY IT MATTERS",
+      caravaggio: "He changed how we see sacred art. His realism made religious stories feel immediate and human.",
+      vermeer: "He mastered the relationship between light, color, and emotion. His paintings ask us to observe carefully.",
+      david: "He represents human potential and ideal form. It's a symbol of freedom, courage, and artistic genius.",
+      coins: "They're windows into how ancient peoples thought about value, power, and identity. Every coin tells an empire's story."
+    }
+  };
 
   function updateSelected() {
     selectedQuestions = Array.from(document.querySelectorAll('.checkbox-item input:checked'))
@@ -483,6 +862,122 @@
     }
   }
 
+  function generateGuidedOptions(objectId) {
+    const obj = objects.find(o => o.id === objectId);
+
+    // Prioritize selected questions that exist in this object
+    const relevantSelected = selectedQuestions.filter(q => obj.questions.includes(q));
+
+    // Get guided options (from selected + complementary)
+    let guidedOptions = relevantSelected.slice(0, 2);
+
+    // Add complementary options if needed
+    if (guidedOptions.length < 3) {
+      const complementary = obj.questions.filter(q => !guidedOptions.includes(q) && !selectedQuestions.includes(q));
+      guidedOptions = guidedOptions.concat(complementary.slice(0, 3 - guidedOptions.length));
+    }
+
+    return guidedOptions.slice(0, 3);
+  }
+
+  function showEngagementFlow(objectId, type = 'click') {
+    currentEngagement = { type, objectId };
+    selectedOption = null;
+    const obj = objects.find(o => o.id === objectId);
+    const guidedOptions = generateGuidedOptions(objectId);
+
+    const title = document.getElementById('engagementScreenTitle');
+    const subtitle = document.getElementById('engagementScreenSubtitle');
+    const container = document.getElementById('optionsContainer');
+
+    title.textContent = type === 'upload'
+      ? 'How does this object relate to your interests?'
+      : `How does this relate to what you want to understand?`;
+
+    subtitle.textContent = 'Choose one of these perspectives, or share your own.';
+    container.textContent = '';
+
+    // Render guided options as clickable cards
+    guidedOptions.forEach((option, idx) => {
+      const card = document.createElement('div');
+      card.className = 'option-card guided-option';
+      card.id = `option-${idx}`;
+      card.innerHTML = `
+        <strong>${option}</strong>
+        <span>${optionDescriptions[option]}</span>
+      `;
+      card.onclick = () => selectOption(option, idx);
+      container.appendChild(card);
+    });
+
+    // Clear feedback textarea
+    document.getElementById('feedbackText').value = '';
+
+    goToScreen('engagementScreen');
+  }
+
+  function selectOption(option, idx) {
+    selectedOption = option;
+    const obj = objects.find(o => o.id === currentEngagement.objectId);
+
+    // Show context screen with explanation
+    const contextTitle = document.getElementById('contextTitle');
+    const contextOption = document.getElementById('contextOption');
+    const contextText = document.getElementById('contextText');
+    const contextEmoji = document.getElementById('contextEmoji');
+
+    contextTitle.textContent = 'The Connection';
+    contextOption.textContent = option;
+    contextEmoji.textContent = obj.emoji;
+
+    // Get context for this object and option
+    let explanation = contextExamples[option]?.[obj.id] ||
+                     contextExamples[option]?.[obj.name.toLowerCase().replace(/\n/g, '')] ||
+                     `This object connects to ${option}. Understanding this dimension enriches how we see and interpret cultural meaning.`;
+
+    contextText.textContent = explanation;
+    document.getElementById('contextFeedbackText').value = '';
+
+    // Enable continue button on engagement screen for reference
+    document.getElementById('continueBtn').disabled = false;
+
+    goToScreen('contextScreen');
+  }
+
+  function submitContext() {
+    if (currentEngagement && selectedOption) {
+      const obj = objects.find(o => o.id === currentEngagement.objectId);
+
+      // Mark object as answered with selected option
+      obj.userAnswered = [selectedOption];
+
+      // Could collect feedback here if needed
+      const contextFeedback = document.getElementById('contextFeedbackText').value;
+
+      // Redraw constellation
+      drawConstellation();
+      goToScreen('constellationScreen');
+    }
+  }
+
+  function submitEngagement() {
+    // This is called if user skips options and only provides feedback
+    if (currentEngagement) {
+      const obj = objects.find(o => o.id === currentEngagement.objectId);
+      const feedbackText = document.getElementById('feedbackText').value;
+
+      // Mark object as answered with first guided option if no selection
+      if (!selectedOption) {
+        const options = generateGuidedOptions(currentEngagement.objectId);
+        obj.userAnswered = options.slice(0, 1);
+      }
+
+      // Redraw constellation
+      drawConstellation();
+      goToScreen('constellationScreen');
+    }
+  }
+
   function drawConstellation() {
     const canvas = document.getElementById('constellation');
     canvas.textContent = '';
@@ -491,7 +986,7 @@
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('width', canvas.offsetWidth);
     svg.setAttribute('height', canvas.offsetHeight);
-    svg.classList.add('connection');
+    svg.classList.add('connection-svg');
     canvas.appendChild(svg);
 
     // Draw connections
@@ -500,21 +995,28 @@
         const obj1 = objects[i];
         const obj2 = objects[j];
 
-        // Check if they share questions
-        const hasCommon = obj1.questions.some(q => obj2.questions.includes(q));
+        // Check if they share answered questions
+        const answeredInCommon = obj1.userAnswered.filter(q => obj2.userAnswered.includes(q));
+        const hasCommon = answeredInCommon.length > 0 ||
+          (obj1.userAnswered.length === 0 && obj2.userAnswered.length === 0 &&
+           obj1.questions.some(q => obj2.questions.includes(q)));
+
         if (hasCommon) {
           const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
           line.setAttribute('x1', obj1.x + 40);
           line.setAttribute('y1', obj1.y + 40);
           line.setAttribute('x2', obj2.x + 40);
           line.setAttribute('y2', obj2.y + 40);
+          line.classList.add('connection-line');
 
-          // Check if connection is relevant to selected questions
+          // Highlight if relevant to selected questions
           const isRelevant = selectedQuestions.length === 0 ||
-            selectedQuestions.some(q => obj1.questions.includes(q) && obj2.questions.includes(q));
+            answeredInCommon.some(q => selectedQuestions.includes(q)) ||
+            (answeredInCommon.length === 0 &&
+             selectedQuestions.some(q => obj1.questions.includes(q) && obj2.questions.includes(q)));
 
           if (isRelevant) {
-            line.classList.add('highlight');
+            line.classList.add('highlighted');
           }
           svg.appendChild(line);
         }
@@ -528,12 +1030,11 @@
       node.style.left = obj.x + 'px';
       node.style.top = obj.y + 'px';
 
-      // Check if object is relevant
-      const isRelevant = selectedQuestions.length === 0 ||
-        selectedQuestions.some(q => obj.questions.includes(q));
-
-      if (!isRelevant) {
-        node.style.opacity = '0.3';
+      // Determine if grayed
+      if (obj.userAnswered.length === 0) {
+        node.classList.add('grayed');
+      } else {
+        node.classList.add('answered');
       }
 
       const imageDiv = document.createElement('div');
@@ -547,10 +1048,7 @@
       node.appendChild(imageDiv);
       node.appendChild(labelDiv);
 
-      node.onclick = () => {
-        const questionsText = obj.questions.join(', ');
-        alert('Clicked: ' + obj.name + '\n\nThis object relates to:\n' + questionsText);
-      };
+      node.onclick = () => showEngagementFlow(obj.id, 'click');
 
       canvas.appendChild(node);
     });
