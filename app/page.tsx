@@ -1,19 +1,30 @@
-import { Button } from "@/components/ui/button"
+"use client"
+
+import { useState } from "react"
+import { SidebarProvider } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/app-sidebar"
+import { InputGroupDemo } from "@/components/input-group-demo"
+import { SplineBackground } from "@/components/backgrounds"
+import { ThumbnailGallery } from "@/components/thumbnail-gallery"
+import { ImageConstellation } from "@/components/image-constellation"
 
 export default function Page() {
+  const [isInputFocused, setIsInputFocused] = useState(false)
+
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
+    <SidebarProvider className="h-svh">
+      <AppSidebar />
+      <main className="relative flex flex-1 flex-col justify-end overflow-hidden">
+        <SplineBackground />
+        <div className="relative z-10 p-6 h-full flex flex-col justify-end gap-6">
+          <ImageConstellation />
+          <ThumbnailGallery isFocused={isInputFocused} />
+          <InputGroupDemo
+            onFocus={() => setIsInputFocused(true)}
+            onBlur={() => setIsInputFocused(false)}
+          />
         </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
-      </div>
-    </div>
+      </main>
+    </SidebarProvider>
   )
 }
